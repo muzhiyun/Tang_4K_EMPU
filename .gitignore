@@ -1,0 +1,6 @@
+*.o
+*.tmp
+src/PROJECT/Listings/*
+src/PROJECT/Objects/*
+src/PROJECT/empu.uvoptx
+src/PROJECT/empu.uvguix.*
