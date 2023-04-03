@@ -9,6 +9,7 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "gw1ns4c.h"
+#include "multiple.h"
 #include <stdio.h>
 
 /* Declarations ------------------------------------------------------------------*/
@@ -52,6 +53,55 @@ int main()
   printf("\nTIMER0 IRQ ENABLE\r\n");
   TIMER_StartTimer(TIMER0);
   printf("\nSTART TIMER0\r\n");
+	printf("/************GOWINSEMI*****************/\r\n");
+	printf("          GOWIN_EMPU(GW1NS-4C)           \r\n");
+	printf("/**************************************/\r\n");
+	printf("System initialization finished.\r\n");
+	printf("Uart initialization finished.\r\n");
+	printf("Multiple initialization finished.\r\n");
+	printf("Initialization Status : \r\n");
+	printf("--MULTIPLIER = %d\r\n",getMultiplier());
+	printf("--MULTIPLICAND = %d\r\n",getMultiplicand());
+	printf("--CMD = %d\r\n",getMultipleCmd());
+	printf("--RESULT = %d\r\n",getMultipleResult());
+
+	printf("Start first multiple\r\n");
+	setMultiplier(20);
+	setMultiplicand(48);
+	startMultiple();
+	printf("Compute Status : \r\n");
+	printf("--Multiplier = %d\r\n",getMultiplier());
+	printf("--Multiplicand = %d\r\n",getMultiplicand());
+	printf("--CMD = %d\r\n",getMultipleCmd());
+	
+	while(getFinishStatus()==FINISHED_STATUS);
+	finishMultiple();
+	
+	printf("Finished Status : \r\n");
+	printf("--Multiplier = %d\r\n",getMultiplier());
+	printf("--Multiplicand = %d\r\n",getMultiplicand());
+	printf("--CMD = %d\r\n",getMultipleCmd());
+	printf("--RESULT = %d\r\n",getMultipleResult());
+	printf("Multiple first finished.\r\n");
+	
+	printf("Start second multiple\r\n");
+	setMultiplier(30);
+	setMultiplicand(48);
+	startMultiple();
+	printf("Compute Status : \r\n");
+	printf("--Multiplier = %d\r\n",getMultiplier());
+	printf("--Multiplicand = %d\r\n",getMultiplicand());
+	printf("--CMD = %d\r\n",getMultipleCmd());
+	
+	while(getFinishStatus()==FINISHED_STATUS);
+	finishMultiple();
+	
+	printf("Finished Status : \r\n");
+	printf("--Multiplier = %d\r\n",getMultiplier());
+	printf("--Multiplicand = %d\r\n",getMultiplicand());
+	printf("--CMD = %d\r\n",getMultipleCmd());
+	printf("--RESULT = %d\r\n",getMultipleResult());
+	printf("Multiple second finished.\r\n");
 	
   while(1)
   {
@@ -60,6 +110,7 @@ int main()
        counter=0;
        printf("\r\n");
 			 printf("%d ",num);
+			 	printf("--Multiplicand = %d\r\n",getMultiplicand());
 			 
        num++;
      }
@@ -67,7 +118,22 @@ int main()
 				GPIO_SetBit(GPIO0,GPIO_Pin_0); 	//LED1 on
 		 else
 				GPIO_ResetBit(GPIO0,GPIO_Pin_0);		//LED1 off
-		 
+		 if(num %4 == 0)
+		 {
+			 setMultiplier(20);
+			 setMultiplicand(64);
+			 startMultiple();
+			 	while(getFinishStatus()==FINISHED_STATUS);
+	finishMultiple();
+		 }
+		 else
+		 {
+			 setMultiplier(20);
+			 setMultiplicand(128);
+		  startMultiple();
+			 		while(getFinishStatus()==FINISHED_STATUS);
+	finishMultiple();
+		 }
      if(num==60)
 		 {	
        num=0;

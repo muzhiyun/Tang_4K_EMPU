@@ -475,6 +475,11 @@
               <FileType>1</FileType>
               <FilePath>..\USER\retarget.c</FilePath>
             </File>
+            <File>
+              <FileName>multiple.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\USER\multiple.c</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>
