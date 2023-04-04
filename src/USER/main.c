@@ -64,7 +64,7 @@ int main()
 	printf("--MULTIPLICAND = %d\r\n",getMultiplicand());
 	printf("--CMD = %d\r\n",getMultipleCmd());
 	printf("--RESULT = %d\r\n",getMultipleResult());
-
+/*
 	printf("Start first multiple\r\n");
 	setMultiplier(20);
 	setMultiplicand(48);
@@ -102,7 +102,7 @@ int main()
 	printf("--CMD = %d\r\n",getMultipleCmd());
 	printf("--RESULT = %d\r\n",getMultipleResult());
 	printf("Multiple second finished.\r\n");
-	
+	*/
   while(1)
   {
      if(counter==2)
@@ -115,24 +115,22 @@ int main()
        num++;
      }
 		 if(num < 30)
-				GPIO_SetBit(GPIO0,GPIO_Pin_0); 	//LED1 on
-		 else
-				GPIO_ResetBit(GPIO0,GPIO_Pin_0);		//LED1 off
-		 if(num %4 == 0)
 		 {
-			 setMultiplier(20);
-			 setMultiplicand(64);
-			 startMultiple();
-			 	while(getFinishStatus()==FINISHED_STATUS);
-	finishMultiple();
+				GPIO_SetBit(GPIO0,GPIO_Pin_0); 	//LED1 on
+			 	setMultiplier(0);
 		 }
 		 else
 		 {
-			 setMultiplier(20);
+				GPIO_ResetBit(GPIO0,GPIO_Pin_0);		//LED1 off
+			 	setMultiplier(128);
+		 }
+		 if(num %2 == 0)
+		 {
+			 setMultiplicand(64);
+		 }
+		 else
+		 {
 			 setMultiplicand(128);
-		  startMultiple();
-			 		while(getFinishStatus()==FINISHED_STATUS);
-	finishMultiple();
 		 }
      if(num==60)
 		 {	
