@@ -24,35 +24,35 @@ volatile uint32_t counter;
 /* Functions ------------------------------------------------------------------*/
 int main()
 {   
-  int num=0;
-	
-	NVIC_InitTypeDef InitTypeDef_NVIC;	//Interrupt handler
-	
-	SystemInit();	//Initializes system
-  UartInit();		//Initializes UART0
-	GPIOInit();		//Initializes GPIO
-	
-  printf("\nUart Initial finished\r\n");
-  printf("\nTimer Initial:\r\n");
-	printf("\nGPIO Initial:\r\n");
-	
-  TimerInit(TIMER0);	//Initializes Timer0
-	
+	int num=0;
 
-  counter=0;  //Dispaly the message
-	
+	NVIC_InitTypeDef InitTypeDef_NVIC;	//Interrupt handler
+
+	SystemInit();	//Initializes system
+	UartInit();		//Initializes UART0
+	GPIOInit();		//Initializes GPIO
+
+	printf("\nUart Initial finished\r\n");
+	printf("\nTimer Initial:\r\n");
+	printf("\nGPIO Initial:\r\n");
+
+	TimerInit(TIMER0);	//Initializes Timer0
+
+
+	counter=0;  //Dispaly the message
+
 	//Enable Timer0 interrupt handler
 	InitTypeDef_NVIC.NVIC_IRQChannel = TIMER0_IRQn;
-  InitTypeDef_NVIC.NVIC_IRQChannelPreemptionPriority = 1;
-  InitTypeDef_NVIC.NVIC_IRQChannelSubPriority = 1;
-  InitTypeDef_NVIC.NVIC_IRQChannelCmd = ENABLE;
-  NVIC_Init(&InitTypeDef_NVIC);
+	InitTypeDef_NVIC.NVIC_IRQChannelPreemptionPriority = 1;
+	InitTypeDef_NVIC.NVIC_IRQChannelSubPriority = 1;
+	InitTypeDef_NVIC.NVIC_IRQChannelCmd = ENABLE;
+	NVIC_Init(&InitTypeDef_NVIC);
 
-  printf("\nNVIC ENABLE IRQ TIMER0\r\n");
-  TIMER_EnableIRQ(TIMER0);
-  printf("\nTIMER0 IRQ ENABLE\r\n");
-  TIMER_StartTimer(TIMER0);
-  printf("\nSTART TIMER0\r\n");
+	printf("\nNVIC ENABLE IRQ TIMER0\r\n");
+	TIMER_EnableIRQ(TIMER0);
+	printf("\nTIMER0 IRQ ENABLE\r\n");
+	TIMER_StartTimer(TIMER0);
+	printf("\nSTART TIMER0\r\n");
 	printf("/************GOWINSEMI*****************/\r\n");
 	printf("          GOWIN_EMPU(GW1NS-4C)           \r\n");
 	printf("/**************************************/\r\n");
@@ -64,79 +64,42 @@ int main()
 	printf("--MULTIPLICAND = %d\r\n",getMultiplicand());
 	printf("--CMD = %d\r\n",getMultipleCmd());
 	printf("--RESULT = %d\r\n",getMultipleResult());
-/*
-	printf("Start first multiple\r\n");
-	setMultiplier(20);
-	setMultiplicand(48);
-	startMultiple();
-	printf("Compute Status : \r\n");
-	printf("--Multiplier = %d\r\n",getMultiplier());
-	printf("--Multiplicand = %d\r\n",getMultiplicand());
-	printf("--CMD = %d\r\n",getMultipleCmd());
-	
-	while(getFinishStatus()==FINISHED_STATUS);
-	finishMultiple();
-	
-	printf("Finished Status : \r\n");
-	printf("--Multiplier = %d\r\n",getMultiplier());
-	printf("--Multiplicand = %d\r\n",getMultiplicand());
-	printf("--CMD = %d\r\n",getMultipleCmd());
-	printf("--RESULT = %d\r\n",getMultipleResult());
-	printf("Multiple first finished.\r\n");
-	
-	printf("Start second multiple\r\n");
-	setMultiplier(30);
-	setMultiplicand(48);
-	startMultiple();
-	printf("Compute Status : \r\n");
-	printf("--Multiplier = %d\r\n",getMultiplier());
-	printf("--Multiplicand = %d\r\n",getMultiplicand());
-	printf("--CMD = %d\r\n",getMultipleCmd());
-	
-	while(getFinishStatus()==FINISHED_STATUS);
-	finishMultiple();
-	
-	printf("Finished Status : \r\n");
-	printf("--Multiplier = %d\r\n",getMultiplier());
-	printf("--Multiplicand = %d\r\n",getMultiplicand());
-	printf("--CMD = %d\r\n",getMultipleCmd());
-	printf("--RESULT = %d\r\n",getMultipleResult());
-	printf("Multiple second finished.\r\n");
-	*/
-  while(1)
-  {
-     if(counter==2)
-     {
-       counter=0;
-       printf("\r\n");
-			 printf("%d ",num);
-			 	printf("--Multiplicand = %d\r\n",getMultiplicand());
-			 
-       num++;
-     }
-		 if(num < 30)
-		 {
-				GPIO_SetBit(GPIO0,GPIO_Pin_0); 	//LED1 on
-			 	setMultiplier(0);
-		 }
-		 else
-		 {
-				GPIO_ResetBit(GPIO0,GPIO_Pin_0);		//LED1 off
-			 	setMultiplier(128);
-		 }
-		 if(num %2 == 0)
-		 {
-			 setMultiplicand(64);
-		 }
-		 else
-		 {
-			 setMultiplicand(128);
-		 }
-     if(num==60)
-		 {	
-       num=0;
+	while(1)
+	{
+		if(counter==2)
+		{
+			counter=0;
+			printf("\r\n");
+			printf("%d ",num);
+			printf("--Multiplier = %d  --Multiplicand = %d\r\n",getMultiplier(),getMultiplicand());
+			num++;
 		}
-  }
+		/* 
+			Multiplier: 	bit7:game start/pause switch 
+							bit6:UI switch
+			Multiplicand:  	bit7:key down    
+							bit6:key down
+		*/
+		if(num <10 )
+			setMultiplier(0);           		// AC on,Reset Game and show Menu UI
+		else if( num < 20)
+		{
+			GPIO_SetBit(GPIO0,GPIO_Pin_0); 		// LED1 on
+			setMultiplier(0x64);     			// Enter Key pressed once,Switch to Game UI,Game should be paused
+		}
+		else
+		{
+			GPIO_ResetBit(GPIO0,GPIO_Pin_0);	// LED1 off
+			setMultiplier(192);              	// Enter Key pressed twice ,Game start
+			if(num %2 == 0)
+			setMultiplicand(64);           		// Left key pressed
+			else
+			setMultiplicand(128);         		// Right key pressed
+		}
+
+		if(num>=30)
+			num=0;
+		}
 }
 
 //Initializes UART0
