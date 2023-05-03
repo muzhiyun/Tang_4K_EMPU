@@ -24,7 +24,7 @@ volatile uint32_t counter;
 /* Functions ------------------------------------------------------------------*/
 int main()
 {   
-	int num=0;
+	long long  num=0;
 
 	NVIC_InitTypeDef InitTypeDef_NVIC;	//Interrupt handler
 
@@ -70,7 +70,7 @@ int main()
 		{
 			counter=0;
 			printf("\r\n");
-			printf("%d ",num);
+			printf("%lld ",num);
 			printf("--Multiplier = %d  --Multiplicand = %d\r\n",getMultiplier(),getMultiplicand());
 			num++;
 		}
@@ -80,9 +80,9 @@ int main()
 			Multiplicand:  	bit7:key down    
 							bit6:key down
 		*/
-		if(num <10 )
+		if(num <5 )
 			setMultiplier(0);           		// AC on,Reset Game and show Menu UI
-		else if( num < 20)
+		else if( num < 10)
 		{
 			GPIO_SetBit(GPIO0,GPIO_Pin_0); 		// LED1 on
 			setMultiplier(0x64);     			// Enter Key pressed once,Switch to Game UI,Game should be paused
@@ -97,7 +97,7 @@ int main()
 			setMultiplicand(128);         		// Right key pressed
 		}
 
-		if(num>=30)
+		if(num>=80000)
 			num=0;
 		}
 }
